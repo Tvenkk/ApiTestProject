@@ -1,17 +1,24 @@
 package tests;
 
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Epic("Работа с данными пользователей")
+@Feature("Получает несуществующего пользователя")
 public class UserNotFoundTest {
     private final String BASE_URL = "https://reqres.in/api/users";
 
+    @Story("Получение несуществующего пользователя")
+    @Description("Получение ошибки 404")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     public void testUserNotFound() {
-        // //Отправка GET-запроса на получение несуществующего пользователя (например, ID 9999)
+        step("Отправка GET-запроса");
         Response response = RestAssured
                 .given()
                 .when()
@@ -21,7 +28,7 @@ public class UserNotFoundTest {
                 .extract()
                 .response();
 
-        // Проверка, что тело ответа пустое
+        step("Проверка, что тело ответа пустое");
         String responseBody = response.getBody().asString();
         assertEquals("{}", responseBody, "Тело ответа не является пустым");
     }
